@@ -2,7 +2,7 @@ from django.db import models
 
 
 def get_path(instance, filename):
-    # file will be uploaded to /media/images/type/id/<filename>
+    # file will be uploaded to /media/images/<filename>
     return f'images/{instance.relation}/{filename}'
 
 
