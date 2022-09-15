@@ -13,7 +13,7 @@ class ImagesGoodInline(admin.StackedInline):
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')
-
+    radio_fields = {'main_image': admin.HORIZONTAL}
     inlines = [
         ImagesCategoryInline,
     ]
@@ -22,7 +22,7 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Good)
 class GoodAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')
-
+    radio_fields = {'main_image': admin.HORIZONTAL}
     inlines = [
         ImagesGoodInline,
     ]

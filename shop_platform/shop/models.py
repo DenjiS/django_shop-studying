@@ -1,5 +1,4 @@
 from django.db import models
-from django.core.files.storage import FileSystemStorage
 
 
 def get_path(instance, filename):
@@ -8,6 +7,7 @@ def get_path(instance, filename):
 
 
 class Image(models.Model):
+    name = models.CharField(max_length=20)
     image = models.ImageField(upload_to=get_path,
                               verbose_name='Image',
                               db_index=True)
@@ -16,12 +16,17 @@ class Image(models.Model):
     def relation(self):
         return self.__class__.__name__
 
+    def __str__(self):
+        return self.name
+
 
 class Category(models.Model):
     name = models.CharField(max_length=20)
     description = models.TextField()
-
-    # TODO: main image
+    main_image = models.ForeignKey('CategoryImage',
+                                   on_delete=models.CASCADE,
+                                   related_name='main_image',
+                                   null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -35,8 +40,10 @@ class Good(models.Model):
     name = models.CharField(max_length=20)
     description = models.TextField()
     category = models.ManyToManyField(Category)
-
-    # TODO: main image
+    main_image = models.ForeignKey('GoodImage',
+                                   on_delete=models.CASCADE,
+                                   related_name='main_image',
+                                   null=True, blank=True)
 
     def __str__(self):
         return self.name
