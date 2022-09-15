@@ -36,11 +36,11 @@ class CategoryImage(Image):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
 
-class Good(models.Model):
+class Product(models.Model):
     name = models.CharField(max_length=20)
     description = models.TextField()
     category = models.ManyToManyField(Category)
-    main_image = models.ForeignKey('GoodImage',
+    main_image = models.ForeignKey('ProductImage',
                                    on_delete=models.CASCADE,
                                    related_name='main_image',
                                    null=True, blank=True)
@@ -49,5 +49,5 @@ class Good(models.Model):
         return self.name
 
 
-class GoodImage(Image):
-    good = models.ForeignKey(Good, on_delete=models.CASCADE)
+class ProductImage(Image):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
