@@ -28,6 +28,9 @@ class Category(models.Model):
                                    related_name='main_image',
                                    null=True, blank=True)
 
+    class Meta:
+        verbose_name_plural = 'Categories'
+
     def __str__(self):
         return self.name
 
