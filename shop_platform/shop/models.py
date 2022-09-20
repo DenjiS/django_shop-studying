@@ -1,23 +1,11 @@
 from django.db import models
 
 
-def get_path(instance, filename):
-    # file will be uploaded to /media/images/type/<filename>
-    return f'images/{instance.relation}/{filename}'
-
-
 class Image(models.Model):
     name = models.CharField(max_length=20)
-    image = models.ImageField(upload_to=get_path,
+    image = models.ImageField(upload_to='images/',
                               verbose_name='Image',
                               db_index=True)
-
-    @property
-    def relation(self):
-        return self.__class__.__name__
-
-    def __str__(self):
-        return self.name
 
 
 class Category(models.Model):
@@ -30,9 +18,6 @@ class Category(models.Model):
 
     class Meta:
         verbose_name_plural = 'Categories'
-
-    def __str__(self):
-        return self.name
 
 
 class CategoryImage(Image):
@@ -47,9 +32,6 @@ class Product(models.Model):
                                    on_delete=models.CASCADE,
                                    related_name='main_image',
                                    null=True, blank=True)
-
-    def __str__(self):
-        return self.name
 
 
 class ProductImage(Image):
