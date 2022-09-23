@@ -12,6 +12,9 @@ class Image(models.Model):
     default = models.BooleanField(default=False)
     album = models.ForeignKey(ImageAlbum, related_name='images', on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.name
+
 
 class Category(models.Model):
     name = models.CharField(max_length=20)
@@ -21,9 +24,15 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = 'Categories'
 
+    def __str__(self):
+        return self.name
+
 
 class Product(models.Model):
     name = models.CharField(max_length=20)
     description = models.TextField()
     categories = models.ManyToManyField(Category)
     album = models.OneToOneField(ImageAlbum, related_name='prod_model', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
