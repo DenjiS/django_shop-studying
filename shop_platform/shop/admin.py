@@ -1,28 +1,21 @@
 from django.contrib import admin
-from .models import Category, Product, CategoryImage, ProductImage
+from .models import Category, Product, Image, ImageAlbum
 
 
-class ImagesCategoryInline(admin.StackedInline):
-    model = CategoryImage
+class ImagesInline(admin.StackedInline):
+    model = Image
 
 
-class ImagesProductInline(admin.StackedInline):
-    model = ProductImage
+@admin.register(ImageAlbum)
+class ImageAlbumAdmin(admin.ModelAdmin):
+    inlines = [ImagesInline,]
 
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')
-    radio_fields = {'main_image': admin.HORIZONTAL}
-    inlines = [
-        ImagesCategoryInline,
-    ]
 
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')
-    radio_fields = {'main_image': admin.HORIZONTAL}
-    inlines = [
-        ImagesProductInline,
-    ]
