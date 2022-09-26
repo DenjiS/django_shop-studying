@@ -1,21 +1,19 @@
 from django.contrib import admin
-from .models import Category, Product, Image, ImageAlbum
+from django.contrib.contenttypes.admin import GenericStackedInline
+from .models import Category, Product, Image
 
 
-class ImagesInline(admin.StackedInline):
+class ImagesInline(GenericStackedInline):
     model = Image
-
-
-@admin.register(ImageAlbum)
-class ImageAlbumAdmin(admin.ModelAdmin):
-    inlines = [ImagesInline,]
 
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')
+    inlines = [ImagesInline, ]
 
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')
+    inlines = [ImagesInline, ]
