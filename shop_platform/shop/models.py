@@ -11,7 +11,7 @@ class Image(models.Model):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=255)
     description = models.TextField()
     images = GenericRelation(Image)
     default_image = models.ImageField(upload_to='images/')
@@ -24,7 +24,7 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=255)
     description = models.TextField()
     categories = models.ManyToManyField(Category)
     images = GenericRelation(Image)
