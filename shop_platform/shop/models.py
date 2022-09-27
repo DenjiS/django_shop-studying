@@ -1,25 +1,25 @@
 from django.db import models
-
-
-class ImageAlbum(models.Model):
-    def default(self):
-        return self.images.filter(default=True).first()
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.contrib.contenttypes.models import ContentType
 
 
 class Image(models.Model):
-    name = models.CharField(max_length=20)
     image = models.ImageField(upload_to='images/')
     default = models.BooleanField(default=False)
-    album = models.ForeignKey(ImageAlbum, related_name='images', on_delete=models.CASCADE)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
 
-    def __str__(self):
-        return self.name
+    def save(self, **kwargs):
+        if self.default:
+            Image.objects.filter(content_type=self.content_type, object_id=self.object_id).update(default=False)
+        super().save(**kwargs)
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=255)
     description = models.TextField()
-    album = models.OneToOneField(ImageAlbum, related_name='cat_model', on_delete=models.CASCADE)
+    images = GenericRelation(Image)
 
     class Meta:
         verbose_name_plural = 'Categories'
@@ -29,10 +29,10 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=255)
     description = models.TextField()
     categories = models.ManyToManyField(Category)
-    album = models.OneToOneField(ImageAlbum, related_name='prod_model', on_delete=models.CASCADE)
+    images = GenericRelation(Image)
 
     def __str__(self):
         return self.name
